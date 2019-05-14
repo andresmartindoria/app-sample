@@ -1,0 +1,60 @@
+<!--
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2 flex md-truncate>Mensajeria</h2>
+    <md-icon ng-click="refresh()">refresh</md-icon>
+  </div>
+</md-toolbar>
+-->
+
+<div layout="column" ng-cloak class="orders notificaciones">
+
+  <!-- orders -->
+  <div ng-if="mensajes.length == 0" layout-padding layout="column" layout-align="center center" class="notResult">
+    <md-icon style="font-size: 84px; color:#bbbbbb; margin-left: 37%;">warning</md-icon><br/><br/>
+    <p>No hay resultados para los filtros seleccionados</p>
+  </div>
+
+  <div ng-if="mensajes != null" ng-repeat="not in mensajes">
+
+    <div class="fecha" ng-if="not.fechaGrupal != null" layout-align="center center">&nbsp{{ not.fechaGrupal | toYear | date : 'EEEE dd MMMM yyyy' }}</div>
+    <md-card class="mensajes" ng-class="not.cliente_enviado == 1 ? 'cliente' : 'operador'">
+      <md-card-title>
+        <!--
+        <md-card-title-media>
+          <div class="md-media-sm card-media" layout md-colors="{background:'grey'}">
+            <span ng-if="not.icon == ''"><img src="assets/img/logo-psdv.png" width="50" style="width:50px; height:50px;"></span>{{ not.icon }}
+          </div>
+        </md-card-title-media>
+        -->
+        <md-card-title-text layout="row">
+          <div flex="95"><span class="md-headline">{{ not.mensaje }}</span></div>
+            <div flex="5" style="text-align: right;" ng-if="not.cliente_enviado == 1">
+            <md-icon ng-if="not.estado == 0" style="fill:#787878; font-size:16pt; margin-top: 6px;">schedule</md-icon>
+            <md-icon ng-if="not.estado == 1" style="fill:#787878; font-size:16pt; margin-top: 6px;">done</md-icon>
+            <md-icon ng-if="not.estado == 2" style="color:#5DADE2; font-size:16pt; margin-top: 6px;">done_all</md-icon>
+          </div>
+          <!-- <span class="md-subhead description">{{ not.mensaje }}</span> -->
+        </md-card-title-text>
+      </md-card-title>
+    </md-card>
+  </div>
+  <!-- END orders -->
+</div>
+
+<style>
+  .orders.notificaciones { height: calc(100vh - 180px); }
+</style>
+
+<md-toolbar class="" class="mensajes-toolbar" layout="row" ng-controller="MensajesController">
+  <div class="" flex="95">
+    <md-input-container class="md-block" style="padding: 0; margin: 0; margin-top: 18px; margin-left: 20px;">
+      <input ng-model="message" name="message" minlength="1" maxlength="250" placeholder="Escribí un Mensaje aquí" style="background: white; padding: 5px; border-radius: 5px;">
+    </md-input-container>
+  </div>
+  <div class="" flex="5" layout-align="center center" style="margin-top: 12px;">
+    <md-button class="md-icon-button" aria-label="Enviar" ng-click="sendMessage()" style="margin: 0;">
+      <md-icon>send</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>

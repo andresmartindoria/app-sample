@@ -1,53 +1,37 @@
-<md-toolbar flex>
-  <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-    <md-button class="md-icon-button" aria-label="Menu" ng-click="main.toggle()">
-      <md-icon>menu</md-icon>
-    </md-button>
-    <p>{{ main.title }}</p>
-    <div style="width: 40px; height: 40px;"></div>
-  </div>
-</md-toolbar>
+<style>
+@media screen and (min-device-width : 320px) and (max-device-width : 600px) {
+  body {
+      background:white;
+   }
+}
+</style>
 
-<md-sidenav class="md-sidenav-left" md-component-id="left">
-  <md-toolbar>
-    <h1 class="md-toolbar-tools">SideNav Menu</h1>
-  </md-toolbar>
-  <md-list ng-cloak>
-    <md-list-item ng-href="http://www.google.com/design/spec/material-design/introduction.html">
-      <md-icon style="padding-right: 16px; color: #000000">school</md-icon>
-      <p>Material Design</p>
-    </md-list-item>
-    <md-list-item ng-href="https://material.angularjs.org/latest/">
-      <md-icon style="padding-right: 16px; color: #000000">settings_ethernet</md-icon>
-      <p>Angular Material</p>
-    </md-list-item>
-  </md-list>
-</md-sidenav>
-
-<div layout="column" layout-align="center center" flex>
-  <md-whiteframe class="md-whiteframe-3dp" layout="column" style="margin: 1em; width: 22em; height: 15em;" flex>
-    <div layout="column" flex style="margin-left: 1em;">
-      <h4>Project:</h4>
-      <p style="margin-top: -1em;">Cordova-Angular-AngularMaterial-Seed</p>
-      <h4>Created by:</h4>
-      <p style="margin-top: -1em;">MarioAleo</p>
-    </div>
-    <md-divider></md-divider>
-    <div layout="row" layout-align="space-around center" flex="20">
-      <md-button class="md-icon-button" aria-label="Project" ng-href="https://github.com/mario-aleo/cordova-angular-angularMaterial-seed">
-        <md-icon style="color: #000000">book</md-icon>
-      </md-button>
-      <md-button class="md-icon-button" aria-label="Creator" ng-href="https://github.com/mario-aleo">
-        <md-icon style="color: #000000">favorite</md-icon>
-      </md-button>
-    </div>
-  </md-whiteframe>
-
-  <div layout-padding>
-    <img src="" id="myImage" width="100%"/>
-  </div>
-
-  <md-button class="md-fab md-primary" aria-label="Menu" id="boton">
-    <md-icon>camera_alt</md-icon>
-  </md-button>
+<div layout="column" layout-padding ng-cloak class="login">
+  <md-card>
+    <form method="post" name="loginForm" ng-submit="sigin()">
+      <md-content class="padding-top">
+        <md-input-container class="md-icon-float md-block">
+          <label>Email</label>
+          <md-icon>email</md-icon>
+          <input required type="email" name="email" ng-model="login.email" minlength="10" maxlength="150" ng-pattern="/^.+@.+\..+$/" />
+          <div ng-messages="registrloginForm.email.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">El Email debe tener entre 10 y 150 caracteres y ser una dirección de v&aacute;lida.</div>
+          </div>
+        </md-input-container>
+        <md-input-container md-no-float class="md-block">
+          <label>Password</label>
+          <md-icon>lock</md-icon>
+          <input ng-model="login.pass" name="pass" type="password" required minlength="4" maxlength="15">
+          <div ng-messages="loginForm.pass.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">El Password debe tener entre 4 y 15 caracteres.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" layout="column">
+          <md-button class="md-raised md-primary" type="submit">Ingresar</md-button>
+          <a ui-sref="register"><md-button class="md-raised md-primary">Registrarse</md-button></a>
+          <a ui-sref="forgot" class="link-forgot"><md-button class="md-primary">Olvide mi Contraseña</md-button></a>
+        </md-input-container>
+      </md-content>
+    </form>
+  </md-card>
 </div>

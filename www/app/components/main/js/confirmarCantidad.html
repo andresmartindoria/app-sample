@@ -1,0 +1,39 @@
+<md-dialog aria-label="Editar Cantidades">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Editar Cantidades</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h4 style="margin-top: 0;">{{ orden.producto_denominacion }}</h4>
+        <md-input-container class="md-icon-float md-block" style="margin-bottom:0;">
+          <label>Cantidad</label>
+          <input ng-model="cantidad" type="text" ng-blur="verificarCantidad(cantidad)">
+        </md-input-container>
+
+        <md-input-container class="md-icon-float md-block" ng-if="orden.pedido_estado_id > 7" style="margin-bottom:0;">
+          <label>Bultos</label>
+          <input ng-model="orden.bulto" type="text">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()">Cancelar</md-button>
+      <md-button class="md-warn" ng-click="parcialCargar('parcial')" ng-if="orden.pedido_estado_id == 4 && orden.parcial != 1 && (cliente_logged.cliente_tipo_id == 1 || cliente_logged.cliente_tipo_id == 4)">Cargar Parcial</md-button>
+      <md-button class="md-warn" ng-click="parcialFinal()" ng-if="orden.pedido_estado_id == 4 && orden.parcial == 2 && (cliente_logged.cliente_tipo_id == 1 || cliente_logged.cliente_tipo_id == 4)">Carga Final</md-button>
+      <md-button class="md-primary" ng-click="validar()" ng-if="(orden.pedido_estado_id == 4 && orden.parcial == 0) || orden.pedido_estado_id > 4">
+        <span ng-if="orden.pedido_estado_id == 4">Carga Final</span>
+        <span ng-if="orden.pedido_estado_id > 4">Guardar</span>
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

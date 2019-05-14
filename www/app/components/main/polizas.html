@@ -1,0 +1,176 @@
+<style>
+  .dashboard { margin-top: 5px; }
+  .dashboard .menu { padding: 0px !important; }
+  .dashboard md-icon { font-size: 2em; }
+  .md-fab { position: fixed; bottom: 10px; right: 10px; }
+</style>
+<div layout="row" layout-padding layout-wrap ng-cloak layout-align="center center" class="dashboard">
+  <md-card flex layout layout-align="center center" class="menu" ng-repeat="men in menu.poliza" ng-click="goToLinkId(men.link)" >
+    <div flex layout-align="space-around center" style="text-align: center;" layout="row">
+      <div flex-30 class="preview-glyphs">
+        <md-icon size="32" class="step" style="color: dodgerblue; margin-top: 8px; margin-left: 8px;">{{ men.icon }}</md-icon>
+      </div>
+      <div flex-70 class="preview-scale" style="margin-right: 5px;">
+        <span class="step">{{ men.name }}</span>
+      </div>
+    </div>
+  </md-card>
+</div>
+
+<!-- patente guardado -->
+<div layout="column" layout-align="center center" layout-padding class="upload" ng-show="menuActivoPoliza == 'newAutoSuccess'">
+  <div class="pasoTerminado" layout="column" layout-align="center center">
+    <md-card md-colors="{backgroundColor:'green'}">
+      <md-card-title>
+        <md-card-title-media>
+          <div class="md-media-sm card-media" layout>
+            <md-icon style="color:#ffffff; margin:12px 0 0 8px; font-size: 48px !important;">check_circle</md-icon>
+          </div>
+        </md-card-title-media>
+        <md-card-title-text>
+          <span class="md-headline">La Patente fue agregada correctamente</span>
+        </md-card-title-text>
+      </md-card-title>
+    </md-card>
+    <md-button ng-click="goToLinkId()">
+      Cerrar&nbsp;<md-icon style="margin-top:-5px;">clear</md-icon>
+    </md-button>
+  </div>
+</div>
+<!-- END patente guardado -->
+
+<!-- new auto -->
+<div layout="column" ng-cloak class="polizas" id="new-auto" layout-padding ng-show="menuActivoPoliza == 'new-auto'">
+
+  <md-card class="menu">
+    <md-input-container class="md-icon-right md-block" style="margin: 0; margin-top: 10px; height: 50px; padding-left: 5px;">
+      <label style="left: 5px;">Buscar Patente</label>
+      <md-icon ng-click="buscarPatente('autos')">search</md-icon>
+      <input ng-model="auto_new.patente">
+    </md-input-container>
+  </md-card>
+
+  <md-card ng-show="auto_new.Cli_Nombre != null">
+    <md-card-title ng-class="(auto_new.Aut_Patente.length == 6) ? 'patente-vieja' : 'patente-nueva'">
+      <div layout="column" layout-align="center center" style="width: 100%;" ng-class="(auto_new.Aut_Patente.length == 6) ? '' : 'patente-nueva-borde'">
+        <div class="">
+          <h2>{{ auto_new.Aut_Patente }}</h2>
+        </div>
+      </div>
+    </md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <div class="card-datos" layout="column">
+        <div layout="row"><span class="label" flex="30">Titular</span><span class="data" flex>{{ auto_new.Cli_Nombre }}</span></div>
+        <div layout="row"><span class="label" flex="30">Dominio</span><span class="data" flex>{{ auto_new.Aut_Patente }}</span></div>
+        <div layout="row"><span class="label" flex="30">Modelo</span><span class="data" flex>{{ auto_new.Aut_Marca }}</span></div>
+        <div layout="row"><span class="label" flex="30">Año</span><span class="data" flex>{{ auto_new.Aut_Modelo }}</span></div>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="initAutoNew()">Cancelar</md-button>
+      <md-button class="md-primary" ng-click="agregarPatente()" ng-disabled="btnAgregar">Agregar</md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+<!-- END new auto -->
+
+<!-- polizas -->
+<div layout="column" ng-cloak class="polizas" id="polizas" ng-show="menuActivoPoliza == 'polizas'">
+
+  <div ng-if="polizas == null" layout-padding layout="column" layout-align="center center" class="notResult">
+    <md-icon style="font-size: 84px; color:#bbbbbb; margin-left: 37%;">warning</md-icon><br/><br/>
+    <p>No hay Polizas disponibles</p>
+  </div>
+
+  <div ng-if="polizas != null" ng-repeat="pol in polizas track by $index">
+
+    <!--
+    <div class="fecha">
+      <md-icon style="fill:#787878; font-size:16pt;">schedule</md-icon>&nbsp;{{ pol.fecha_emision | toYear | date : 'EEEE dd MMMM yyyy' }}
+    </div>
+    -->
+    <md-card>
+      <md-card-title>
+        <div layout="row" layout-align="space-between center" style="width: 100%;">
+          <div class="endoso" flex-30>
+            <span class="label">Poliza</span>
+            <h2>{{ pol.Oper_Poliza }}</h2>
+          </div>
+          <div class="logo" flex-70>
+            <img ng-src="{{ base_url_logos }}/{{ pol.logoAseguradora }}" style="max-width: 200px;"/>
+          </div>
+        </div>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="card-datos" layout="column">
+          <div layout="row"><span class="label" flex="30">Asegurado</span><span class="data" flex>{{ pol.Cli_Nombre }}</span></div>
+          <div layout="row"><span class="label" flex="30">Dominio</span><span class="data" flex>{{ pol.Aut_Patente }}</span></div>
+          <div layout="row"><span class="label" flex="30">Modelo</span><span class="data" flex>{{ pol.Aut_Marca }}</span></div>
+          <div layout="row"><span class="label" flex="30">Año</span><span class="data" flex>{{ pol.Aut_Modelo }}</span></div>
+          <div layout="row"><span class="label" flex="30">Vigencia</span><span class="data" flex>{{ pol.OperVigDesde | date : 'dd MMM yyyy' }} hasta {{ pol.OperVigHasta | date : 'dd MMM yyyy' }}</span></div>
+          <!-- <div layout="row"><span class="label" flex="30">Paga con</span><span class="data" flex>{{ pol.nombrePago }}</span></div> -->
+          <div layout="row"><span class="label" flex="30">Productor</span><span class="data" flex>{{ pol.Cia_Nombre }}</span></div>
+        </div>
+        <!--
+        <span class="md-headline">{{ pol.Cia_Nombre }}</span>
+        <span class="md-subhead description">{{ pol.nombreProductor }} - {{ pol.nombrePago }}</span>
+        -->
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <div ng-if="polizas != null">
+    <md-card>
+      <md-card-title>
+        <span class="label">Archivos</span>
+      </md-card-title >
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="card-datos" layout="row">
+          <div class="poliza-pdf" layout-align="center center" ng-click="abrirPoliza(pol.endoso)" ng-repeat="pol in polizas track by $index">
+            <img src="assets/img/icon-pdf.png" width="56" height="56"/><br/>{{ pol.endoso }}
+          </div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+
+</div>
+<!-- END polizas -->
+
+<!-- autos -->
+<div layout="column" ng-cloak class="polizas" id="autos" ng-show="menuActivoPoliza == 'autos'">
+
+  <div ng-if="autos == null" layout-padding layout="column" layout-align="center center" class="notResult">
+    <md-icon style="font-size: 84px; color:#bbbbbb; margin-left: 37%;">warning</md-icon><br/><br/>
+    <p>No hay Autos del cliente</p>
+  </div>
+
+  <div ng-if="autos != null" ng-repeat="au in autos track by $index">
+    <md-card>
+      <md-card-title ng-class="(au.Aut_Patente.length == 6) ? 'patente-vieja' : 'patente-nueva'">
+        <div layout="column" layout-align="center center" style="width: 100%;" ng-class="(au.Aut_Patente.length == 6) ? '' : 'patente-nueva-borde'">
+          <div class="">
+            <h2>{{ au.Aut_Patente }}</h2>
+          </div>
+        </div>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="card-datos" layout="column">
+          <div layout="row"><span class="label" flex="30">Titular</span><span class="data" flex>{{ au.Cli_Nombre }}</span></div>
+          <div layout="row"><span class="label" flex="30">Dominio</span><span class="data" flex>{{ au.Aut_Patente }}</span></div>
+          <div layout="row"><span class="label" flex="30">Modelo</span><span class="data" flex>{{ au.Aut_Marca }}</span></div>
+          <div layout="row"><span class="label" flex="30">Año</span><span class="data" flex>{{ au.Aut_Modelo }}</span></div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <button class="md-fab md-primary md-button" type="button" ng-click="goToLinkId('new-auto')">
+    <md-icon size="24" style="fill:white; color: white;">add</md-icon>
+  </button>
+</div>
+<!-- END autos -->

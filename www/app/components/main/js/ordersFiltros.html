@@ -1,0 +1,43 @@
+<!-- estados -->
+<md-input-container class="order-filtro-estado">
+  <label>Estados</label>
+  <md-select ng-model="filtrosPedidos.estadoFiltro" multiple>
+    <md-option ng-click="filterSelectAll()"><md-icon>{{ filterSelectAllIcon }}</md-icon>&nbsp;{{ filterSelectAllText }}</md-option>
+    <md-option ng-repeat="es in status" value="{{es.id}}"><md-icon>{{ es.icon }}</md-icon>&nbsp;{{es.nombre}}</md-option>
+  </md-select>
+</md-input-container>
+<!-- Productos -->
+<md-input-container>
+  <label>Productos</label>
+  <md-select ng-model="filtrosPedidos.productoId">
+    <md-option ng-click="filtrosPedidosReset('productoId')">TODOS</md-option>
+    <md-option ng-repeat="pr in filtrosPedidos.productos" value="{{pr}}">{{pr}}</md-option>
+  </md-select>
+</md-input-container>
+<!-- Distribuidoras -->
+<md-input-container ng-if="cliente_logged.cliente_tipo_id != 3">
+  <label>Distribuidoras</label>
+  <md-select ng-model="filtrosPedidos.distribuidoraId">
+    <md-option ng-click="filtrosPedidosReset('distribuidoraId')">TODOS</md-option>
+    <md-option ng-repeat="pr in filtrosPedidos.distribuidoras" value="{{pr}}">{{pr}}</md-option>
+  </md-select>
+</md-input-container>
+<!-- Tranposrtistas -->
+<md-input-container ng-if="cliente_logged.cliente_tipo_id != 2">
+  <label>Tranposrtistas</label>
+  <md-select ng-model="filtrosPedidos.transportistaId">
+    <md-option ng-click="filtrosPedidosReset('transportistaId')">TODOS</md-option>
+    <md-option ng-repeat="pr in filtrosPedidos.transportistas" value="{{pr}}">{{pr}}</md-option>
+  </md-select>
+</md-input-container>
+<!-- Orden -->
+<md-input-container>
+  <label>Ordenar Por</label>
+  <md-select ng-model="filtrosPedidos.ordenBy" ng-change="orderBy()">
+    <md-option>Producto</md-option>
+    <md-option ng-if="cliente_logged.cliente_tipo_id != 3">Distribuidora</md-option>
+    <md-option ng-if="cliente_logged.cliente_tipo_id != 2">Transportista</md-option>
+    <md-option>Fecha Salida</md-option>
+    <md-option>Fecha Vencimiento</md-option>
+  </md-select>
+</md-input-container>

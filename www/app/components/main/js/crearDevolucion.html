@@ -1,0 +1,35 @@
+<md-dialog aria-label="{{ title }}">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{ title }}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h4 style="margin: 10px 0;">Cargar Cantidades y Total de Bultos:</h4>
+        <md-input-container class="md-block" ng-repeat="or in ordenes track by $index" style="margin-bottom:0;" ng-if="(or.pedido_estado_id == 8 || or.pedido_estado_id == 11) || (or.pedido_estado_id == 9 && cliente_logged.cliente_tipo_id == 3)"><!-- ng-if="cliente_logged.cliente_tipo_id != 2"-->
+          <label>{{ or.producto_denominacion }}</label>
+          <input ng-model="or.cantidad_actual" type="text" ng-blur="verificarCantidad(or.cantidad_actual, or)">
+        </md-input-container>
+
+        <md-input-container class="md-block" style="margin-bottom:0;">
+          <label>Bultos</label>
+          <input ng-model="bultos" type="text">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()">Cancelar</md-button>
+      <md-button class="md-primary" ng-click="validar()" ng-if="cliente_logged.cliente_tipo_id != 3">Guardar</md-button>
+      <md-button class="md-primary" ng-click="editarDev()" ng-if="devActual.pedido_estado_id == 9 && cliente_logged.cliente_tipo_id == 3">Editar</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

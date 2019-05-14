@@ -1,0 +1,78 @@
+<style>
+@media screen and (min-device-width : 320px) and (max-device-width : 600px) {
+  body {
+    /*background: url(assets/img/background.jpg) top center !important;*/
+   }
+}
+</style>
+
+<div layout="column" layout-padding ng-cloak class="login">
+
+  <md-whiteframe class="md-whiteframe-3dp" layout="row" style="margin: 1em; padding: 1em; width: 90%;" layout-align="center center" md-colors="{background: 'green-500'}" ng-if="registroSuccess == true">
+    <div flex="10"><md-icon size="64" style="font-size:36px; margin-top:-10px;">check_circle</md-icon></div>
+    <div flex style="padding-left:10px;">
+      <p>Gracias por Registrarte. Tu registro está en revisión.<br/>Te avisaremos por email cuando la cuenta este aprobada.</p>
+    </div>
+  </md-whiteframe>
+
+  <md-card ng-if="registroSuccess == null">
+    <div class="">
+      <form method="post" name="registroForm" ng-submit="registrar()">
+        <md-input-container class="md-icon-float md-block">
+          <label>Patente</label>
+          <md-icon>directions_car</md-icon>
+          <input ng-model="registro.patente" name="patente" required minlength="6" maxlength="10">
+          <div ng-messages="registroForm.patente.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">La Patente debe tener entre 6 y 10 caracteres.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+          <label>Nombre</label>
+          <md-icon>person</md-icon>
+          <input ng-model="registro.nombre" name="nombre" required minlength="4" maxlength="150">
+          <div ng-messages="registroForm.nombre.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">El Nombre debe tener entre 4 y 150 caracteres.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+          <label>Email</label>
+          <md-icon>email</md-icon>
+          <input required type="email" name="email" ng-model="registro.email" minlength="10" maxlength="150" ng-pattern="/^.+@.+\..+$/" />
+          <div ng-messages="registroForm.email.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">El Email debe tener entre 10 y 150 caracteres y ser una dirección de v&aacute;lida.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+          <label>Password</label>
+          <md-icon>lock</md-icon>
+          <input ng-model="registro.pass" name="pass" type="password" required minlength="4" maxlength="15">
+          <div ng-messages="registroForm.pass.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">El Password debe tener entre 4 y 15 caracteres.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+          <label>Tel&eacute;fono</label>
+          <md-icon>phone</md-icon>
+          <input ng-model="registro.telefono" name="telefono" minlength="6" maxlength="15" type="tel">
+          <div ng-messages="registroForm.telefono.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">El Tel&eacute;fono debe tener entre 6 y 15 caracteres.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+          <label>Celular</label>
+          <md-icon>smartphone</md-icon>
+          <input ng-model="registro.celular" name="celular" minlength="8" maxlength="15" type="tel">
+          <div ng-messages="registroForm.celular.$error">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">El Celular debe tener entre 8 y 15 caracteres.</div>
+          </div>
+        </md-input-container>
+        <!-- ng-disabled="registroSubmit == null"-->
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="btnRegistrar">
+          <span ng-show="btnRegistrar == false">Registrarse</span>
+          <span ng-show="btnRegistrar == true">Procesando...</span>
+        </md-button>
+      </form>
+    </div>
+  </md-card>
+
+</div>

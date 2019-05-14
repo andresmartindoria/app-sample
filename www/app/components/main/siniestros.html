@@ -1,0 +1,228 @@
+<!--
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2 flex md-truncate>Siniestros</h2>
+    <md-icon ng-click="refresh()">refresh</md-icon>
+  </div>
+</md-toolbar>
+-->
+
+<!-- siniestro guardado -->
+<div layout="column" layout-align="center center" layout-padding class="upload" ng-if="formPaso == 3">
+  <div class="pasoTerminado" layout="column" layout-align="center center">
+    <md-card md-colors="{backgroundColor:'green'}">
+      <md-card-title>
+        <md-card-title-media>
+          <div class="md-media-sm card-media" layout>
+            <md-icon style="color:#ffffff; margin:12px 0 0 8px; font-size: 48px !important;">check_circle</md-icon>
+          </div>
+        </md-card-title-media>
+        <md-card-title-text>
+          <span class="md-headline">El Siniestro se guardo correctamente</span>
+          <span class="md-subhead description">Los Datos se enviaron al Productor</span>
+        </md-card-title-text>
+      </md-card-title>
+    </md-card>
+    <md-button ng-click="initFormSiniestro()">
+      Cerrar&nbsp;<md-icon style="margin-top:-5px;">clear</md-icon>
+    </md-button>
+  </div>
+</div>
+<!-- END siniestro guardado -->
+
+<div layout="row" layout-padding layout-wrap ng-cloak layout-align="center center" class="dashboard" ng-show="formPaso == 1">
+  <md-card flex-xs="40" flex-gt-sm="33" layout layout-align="center center" class="menu" ng-repeat="men in menu.siniestro" ng-click="nextStep(men.id)">
+    <div flex layout-align="center center" style="text-align: center;" layout="column">
+      <div flex></div>
+      <div class="preview-glyphs">
+        <md-icon size="64" class="step" style="color: dodgerblue;">{{ men.icon }}</md-icon>
+      </div>
+      <div class="preview-scale">
+        <span class="step">{{ men.name }}</span>
+      </div>
+    </div>
+  </md-card>
+</div>
+
+<div layout="column" ng-cloak class="siniestro" ng-show="formPaso == 2">
+
+  <form method="post" name="siniestroForm" ng-submit="guardarSiniestro()">
+    <div layout="column" ng-cloak class="orders notificaciones">
+      <div class="fecha">
+        <md-icon style="color:dodgerblue; font-size:16pt;">directions_car</md-icon>&nbsp;Datos del Auto
+      </div>
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{ cliente_logged.marca }} {{ cliente_logged.modelo }} {{ cliente_logged.anio }} ({{ cliente_logged.patente }})</span>
+            <!-- <span class="md-subhead description">{{ not.body }}</span> -->
+          </md-card-title-text>
+        </md-card-title>
+      </md-card>
+
+      <div class="fecha">
+        <md-icon style="color:dodgerblue; font-size:16pt;">person</md-icon>&nbsp;Datos del Conductor
+      </div>
+      <md-card>
+          <md-content class="padding-top">
+
+            <input type="hidden" name="tipo" ng-model="siniestro.tipo" ng-disabled="true">
+
+            <md-input-container class="md-block">
+              <label>Quién manejaba?</label>
+              <md-select ng-model="siniestro.conductor">
+                <md-option value="1">Títular</md-option>
+                <md-option value="2">Otra Persona</md-option>
+              </md-select><br/>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-if="siniestro.conductor == 2">
+              <label>Nombre del que Manejaba</label>
+              <input required type="text" name="otro_nombre" ng-model="siniestro.otro_nombre" minlength="10" maxlength="150"/>
+              <div ng-messages="siniestroForm.otro_nombre.$error">
+                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">El Email debe tener entre 10 y 150 caracteres y ser una dirección de v&aacute;lida.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-if="siniestro.conductor == 2">
+              <label>Teléfono del que Manejaba</label>
+              <input ng-model="siniestro.otro_telefono" name="siniestro.otro_telefono" minlength="8" maxlength="15" type="tel">
+              <div ng-messages="siniestroForm.otro_telefono.$error">
+                <div ng-message-exp="['required', 'minlength', 'maxlength']">El Celular debe tener entre 8 y 15 caracteres.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-if="siniestro.tipo == 1 || siniestro.tipo == 2">
+              <label>Nombre del Tercero</label>
+              <input ng-model="siniestro.tercero_nombre" name="tercero_nombre" minlength="5" maxlength="155" type="text">
+              <div ng-messages="siniestroForm.tercero_nombre.$error">
+                <div ng-message-exp="['minlength', 'maxlength']">El Nombre debe tener entre 5 y 155 caracteres.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-if="siniestro.tipo == 1 || siniestro.tipo == 2">
+              <label>Teléfono del Tercero</label>
+              <input ng-model="siniestro.tercero_telefono" name="tercero_telefono" minlength="8" maxlength="15" type="tel">
+              <div ng-messages="siniestroForm.tercero_telefono.$error">
+                <div ng-message-exp="['minlength', 'maxlength']">El Celular debe tener entre 8 y 15 caracteres.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Relato del Hecho</label>
+              <textarea required ng-model="siniestro.relato" name="relato" minlength="15" maxlength="150" rows="5" md-select-on-focus></textarea>
+              <div ng-messages="siniestroForm.relato.$error">
+                <div ng-message-exp="['required', 'minlength', 'maxlength']">El Relato debe tener entre 15 y 150 caracteres.</div>
+              </div>
+            </md-input-container>
+
+          </md-content>
+      </md-card>
+
+      <div class="fecha">
+        <md-icon style="color:dodgerblue; font-size:16pt;">location_on</md-icon>&nbsp;Lugar y Fecha
+      </div>
+      <md-card>
+          <md-content class="padding-top">
+
+            <div class="md-block" layout="row">
+              <div flex="50" style="margin: 10px; margin-bottom: 15px;">
+                <label>Fecha</label>
+                <md-datepicker ng-model="siniestro.fecha" md-placeholder="Fecha" required md-min-date="prestamoLlave.fecha_hoy" style="margin-left: -13px;"></md-datepicker>
+                <div ng-messages="siniestroForm.fecha.$error">
+                  <div ng-message-exp="['required']">La Fecha es Obligatoria.</div>
+                </div>
+              </div>
+              <md-input-container style="margin-right: 10px; width: 100%; margin-top: 34px;" flex="25">
+                <label>Hora</label>
+                <md-select ng-model="siniestro.hora">
+                  <md-option ng-repeat="hora in siniestro.horas" value="{{hora}}">{{hora}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container style="margin-right: 10px; width: 100%; margin-top: 34px;" flex="25">
+                <label>Minutos</label>
+                <md-select ng-model="siniestro.minuto">
+                  <md-option ng-repeat="minuto in siniestro.minutos" value="{{minuto}}">{{minuto}}</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+
+            <md-input-container class="md-block">
+              <label>Dirección</label>
+              <input ng-model="siniestro.ubicacion" name="ubicacion" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Ubicación</label>
+              <input ng-model="siniestro.ubicacion_map" name="ubicacion_map" type="text" ng-disabled="true">
+            </md-input-container>
+
+            <div id="map" class="md-card-image" style="height: 300px;"></div>
+
+          </md-content>
+      </md-card>
+
+      <div id="thumbnails" ng-show="galeria.length > 0">
+        <div class="fecha">
+          <md-icon style="color:dodgerblue; font-size:16pt;">image</md-icon>&nbsp;Im&aacute;genes
+        </div>
+        <div layout="row" layout-wrap ng-cloak layout-align="center center" class="dashboard">
+          <md-card ng-repeat="foto in galeria" flex-xs="40" flex-gt-sm="33" layout layout-align="center center" class="menu">
+            <md-content>
+              <img ng-src="{{ foto }}" style="max-width: 100%;"/>
+            </md-content>
+          </md-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="" layout="row" layout-align="space-between center" ng-show="galeria.length < 4">
+      <md-button flex type="button" style="width: 45%; margin-bottom: 10px; text-align: center;" class="md-raised md-primary" id="btn_camara">
+        <md-icon style="color:black; font-size:16pt;">camera_alt</md-icon>&nbsp;Camara
+      </md-button>
+      <md-button flex type="button" style="width: 45%; margin-bottom: 10px; text-align: center;" class="md-raised md-primary" id="btn_galery">
+        <md-icon style="color:black; font-size:16pt;">image</md-icon>&nbsp;Galeria
+      </md-button>
+    </div><br/>
+
+    <md-button type="submit" style="width: 96%; margin-bottom: 10px; text-align: center;" class="md-raised md-primary" ng-disabled="btnGuardar">{{ btn_guardar_denuncia }}</md-button><br/><br/>
+
+  </form>
+</div>
+
+
+  <!--
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Denunciar Siniestro</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-card-icon-actions>
+        <!--
+        <md-button class="md-icon-button" aria-label="Favorite">
+          <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="Share">
+          <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
+        </md-button>
+        --
+      </md-card-icon-actions>
+      <md-button class="md-raised">Llamar Grúa</md-button>
+      <md-button class="md-raised">Llamar Seguro</md-button>
+    </md-card-actions>
+    <md-card-content>
+      <p>Tu ubicación actual es: <br/><b>{{ address }}</b></p>
+      <p>Coordenadas para GPS: <br/><b>{{ position.lat }} , {{ position.lng }}</b></p>
+    </md-card-content>
+  </md-card>
+  -->
+</div>
+
+
+<!--
+<md-toolbar style="bottom: 0; position: fixed;" ng-show="formPaso == 2">
+  <md-button ng-click="guardarSiniestro()" style="margin-top: 12px;">Guardar Denuncia</md-button>
+</md-toolbar>
+-->

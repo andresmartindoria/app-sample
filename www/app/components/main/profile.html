@@ -1,0 +1,82 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+      <h2>Perfil {{ clientePerfil.clienteTipo }}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" aria-label="Editar" ng-click="editarInputs()" ng-if="editarView == false">
+        <md-icon>edit</md-icon>
+      </md-button>
+  </div>
+</md-toolbar>
+
+<md-content layout-align="center center">
+
+  <div class="profile" layout-align="center center" layout="column">
+      <div class="cabecera" md-colors="{background: 'primary'}" layout-align="center center" layout="column">
+          <div class="icon">
+              <md-icon>account_circle</md-icon>
+          </div>
+          <div class="name">{{ clientePerfil.nombre }}</div>
+      </div>
+      <div class="datos" layout-padding layout="column">
+
+          <div layout="row" layout-align="start center">
+              <div class="" flex="15">
+                  <md-icon>{{ clientePerfil.clienteEstadoIcon }}</md-icon>
+              </div>
+              <div style="text-align: left;" flex>{{ clientePerfil.clienteEstado }}</div>
+          </div>
+          <md-divider ng-if="editarView == true"></md-divider>
+          <div layout="row" layout-align="start center" ng-if="editarView == true">
+              <div class="" flex="15"><md-icon>person</md-icon></div>
+              <div style="text-align: left;" flex>
+                  <md-input-container class="md-block">
+                      <input ng-model="clientePerfil.nombre" type="text" placeholder="Nombre">
+                  </md-input-container>
+              </div>
+          </div>
+          <md-divider ng-if="editarView == false"></md-divider>
+          <div layout="row" layout-align="start center">
+              <div class="" flex="15"><md-icon>email</md-icon></div>
+              <div style="text-align: left;" flex>
+                  <span ng-if="editarView == false">{{ clientePerfil.email }}</span>
+                  <md-input-container class="md-block" ng-if="editarView == true">
+                      <input ng-model="clientePerfil.email" type="text" placeholder="Email">
+                  </md-input-container>
+              </div>
+          </div>
+          <md-divider ng-if="editarView == false"></md-divider>
+          <div layout="row" layout-align="start center">
+              <div class="" flex="15"><md-icon>home</md-icon></div>
+              <div style="text-align: left;" flex>
+                  <span ng-if="editarView == false">{{ clientePerfil.direccion }}</span>
+                  <md-input-container class="md-block" ng-if="editarView == true">
+                      <input ng-model="clientePerfil.direccion" type="text" placeholder="Direccion">
+                  </md-input-container>
+              </div>
+          </div>
+          <md-divider ng-if="editarView == false"></md-divider>
+          <div layout="row" layout-align="start center">
+              <div class="" flex="15"><md-icon>phone</md-icon></div>
+              <div style="text-align: left;" flex>
+                  <span ng-if="editarView == false">{{ clientePerfil.telefono }}</span>
+                  <md-input-container class="md-block" ng-if="editarView == true">
+                      <input ng-model="clientePerfil.telefono" type="tel" placeholder="Telefono">
+                  </md-input-container>
+              </div>
+          </div>
+          <md-divider ng-if="editarView == false"></md-divider>
+          <div layout="row" layout-align="start center">
+              <div class="" flex="15"><md-icon>smartphone</md-icon></div>
+              <div style="text-align: left;" flex>
+                  <span ng-if="editarView == false">{{ clientePerfil.celular }}</span>
+                  <md-input-container class="md-block" ng-if="editarView == true">
+                      <input ng-model="clientePerfil.celular" type="tel" placeholder="Celular">
+                  </md-input-container>
+              </div>
+          </div>
+
+          <md-button type="button" class="md-raised md-primary" ng-if="editarView == true" ng-click="submitEditar()" ng-disabled="editarSubmitBtn">Guardar Cambios</md-button>
+      </div>
+  </div>
+
+</md-content>

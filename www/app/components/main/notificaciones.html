@@ -1,0 +1,39 @@
+<!--
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2 flex md-truncate>Notificaciones Recibidas</h2>
+    <md-icon ng-click="refresh()">refresh</md-icon>
+  </div>
+</md-toolbar>
+-->
+
+<div layout="column" ng-cloak class="orders notificaciones">
+
+  <!-- orders -->
+  <div ng-if="notificaciones.length == 0" layout-padding layout="column" layout-align="center center" class="notResult">
+    <md-icon style="font-size: 84px; color:#bbbbbb; margin-left: 37%;">warning</md-icon><br/><br/>
+    <p>No hay resultados para los filtros seleccionados</p>
+  </div>
+
+  <div ng-if="notificaciones != null" ng-repeat="not in notificaciones track by $index">
+
+    <div class="fecha" ng-if="not.fechaGrupal != null">
+      <md-icon style="fill:#787878; font-size:16pt;">schedule</md-icon>&nbsp;{{ not.fechaGrupal | toYear | date : 'EEEE dd MMMM yyyy' }}
+    </div>
+    <md-card>
+      <md-card-title>
+        <md-card-title-media>
+          <div class="md-media-sm card-media" layout md-colors="{background:'grey'}">
+            <span ng-if="not.icon == ''"><img src="assets/img/logo-psdv.png" width="50" style="width:50px; height:50px;"></span>{{ not.icon }}
+          </div>
+        </md-card-title-media>
+        <md-card-title-text>
+          <span class="md-headline">{{ not.titulo }}</span>
+          <span class="md-subhead description">{{ not.body }}</span>
+        </md-card-title-text>
+      </md-card-title>
+    </md-card>
+  </div>
+  <!-- END orders -->
+
+</div>

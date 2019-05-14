@@ -3,16 +3,21 @@
     text-decoration: none;
 }
 
+html, body {
+
+}
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-attachment:fixed;
-    font-family:"RobotoDraft", Helvetica, Arial, sans-serif;
-    height:100%;
+    background: #ebebeb;
+    font-family:"Roboto", Helvetica, Arial, sans-serif;
+    height: auto !important;
     margin:0px;
     padding:0px;
     width:100%;
+    overflow: visible;
 }
 
 /* Portrait layout (default) */
@@ -82,3 +87,405 @@ body {
 * .md-focused {
     background-color: rgba(0, 0, 0, 0) !important;
 }
+
+/* Tablet - Desktop */
+@media screen and (min-device-width : 480px) and (max-device-width : 1944px) {
+    .login .md-button {
+        width: 98%;
+    }
+    .dashboard {
+        margin: 0 auto;
+        width: 50%;
+    }
+    .orders .status md-card {
+        max-width: 12%;
+        height: 120px;
+    }
+    .orders .orders-filtros {
+        margin-right: 10px;
+        width: 200px;
+    }
+    .orders .orders-filtros .order-filtro-estado {
+        margin-right: 10px;
+        max-width: 300px;
+    }
+}
+
+md-card {
+    background: white;
+}
+md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon) {
+    margin-right: 20px !important;
+    margin-left: 16px;
+    color: #666666 !important;
+}
+.md-sidenav-right {
+    color: #666666 !important;
+}
+
+/* login */
+body {
+    color: black !important;
+}
+.login md-input-container.md-default-theme .md-input, .login md-input-container .md-input, .login md-input-container.md-default-theme > md-icon, .login md-input-container > md-icon {
+    color: #666666 !important;
+}
+.login md-input-container.md-default-theme label, .login md-input-container label, .login md-input-container.md-default-theme ._md-placeholder, .login md-input-container ._md-placeholder {
+    color: #666666 !important;
+}
+.login md-input-container.md-default-theme .md-input, .login md-input-container .md-input {
+    border-color: #cccccc !important;
+}
+.login {
+    margin: 0 auto !important;
+    /*width: 500px !important;*/
+}
+.login md-card, .login md-content {
+    background: white !important;
+}
+.login {
+    color: white;
+    height: auto;
+}
+.login md-card, .login md-content {
+    background: none;
+}
+
+.login .md-button {
+    width: 95%;
+}
+.login a {
+    width: 95%;
+}
+.link-forgot .md-button {
+    font-size: 11px;
+}
+/* Dashboard */
+.dashboard {
+    margin-top: 25px;
+    width: 100%;
+}
+.dashboard .menu {
+    /*background: white;
+    border: 2px solid #666666;
+    margin: 10px;*/
+    padding: 30px 20px !important;
+    cursor: pointer;
+}
+.dashboard .menu:hover {
+    background: #eeeeee;
+}
+.dashboard md-icon {
+    /*color: red;*/
+    font-size: 2.5em;
+    margin-left: -14px;
+    margin-bottom: 20px;
+}
+.padding {
+    padding: 10px;
+}
+.padding-top {
+    padding-top: 10px;
+}
+.padding-bottom {
+    padding-bottom: 10px;
+}
+.padding-left {
+    padding-left: 10px;
+}
+.padding-right {
+    padding-right: 10px;
+}
+.vto {
+    color: red;
+}
+.cantidad {
+    color: black;
+}
+
+/* orders */
+.orders {
+    overflow: hidden;
+}
+.orders .clientes {
+    background: white;
+    border-bottom: 1px solid #999999;
+}
+.orders .list-icon {
+    border-radius: 50%;
+    padding: 5px;
+    margin-right: 10px;
+    margin-top: 5px;
+    height: 24px;
+    width: 24px;
+}
+.orders .list-icon md-icon {
+    color: white !important;
+}
+.orders .input-cantidad {
+    width: 50px;
+    padding: 5px:
+}
+.orders .status {
+
+}
+.orders .status md-card {
+    width: 96%;
+}
+.orders .card-media md-icon {
+    color: white;
+}
+.orders span.card-title {
+    padding-left: 15px;
+    margin-top: 20px;
+}
+.orders .card-media {
+    margin-right: 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.orders .md-headline {
+    font-size: 1.1em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.orders .status .md-subhead {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.orders .md-subhead.date {
+    font-size: 10px;
+    color: #787878;
+}
+.orders md-card md-card-title md-card-title-media .md-media-sm {
+    height: 50px;
+    width: 50px;
+}
+.orders md-list {
+    padding: 0;
+}
+.orders .statusDiv {
+    margin: 5px 10px 10px;
+    cursor: pointer;
+    border: 1px solid #999999;
+    padding: 5px;
+}
+.notResult {
+    color: #aaaaaa;
+    font-size: 24px;
+    margin-top: 50px;
+    text-align: center;
+}
+.orders .notResult p {
+    text-align: center;
+}
+.orders .orders-filtros md-input-container {
+    width:100%;
+}
+.orders .orders-filtros .order-filtro-estado {
+    width: 100%;
+}
+/* END orders */
+
+/* notificaciones */
+.orders.notificaciones .md-headline {
+    font-size: 1.1em;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+.orders.notificaciones .fecha {
+    margin: 10px 0 0 10px;
+    color: #787878;
+    font-size: 10pt;
+    font-weight: bold;
+}
+.orders.notificaciones md-card-title {
+    padding: 10px;
+}
+.orders.notificaciones .card-media {
+    margin-right: 10px;
+}
+/* END notificaciones */
+
+/* profile */
+.profile {
+    margin: 0 auto;
+    text-align: center;
+}
+.profile .cabecera {
+    height: 12em;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+.profile .cabecera .name {
+    font-size: 2em;
+    margin: 0.5em 0;
+}
+.profile .cabecera .icon {
+    width: 6.5em;
+    height: 6.5em;
+}
+.profile .cabecera .icon md-icon {
+    color: white;
+    font-size: 6.5em;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: -0.8em;
+}
+.profile .datos {
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+.profile .datos md-icon {
+    /*color: red;*/
+}
+.profile .datos md-input-container {
+    margin: 0;
+    height: 30px;
+}
+/* END profile */
+
+/* clientes*/
+.clientes .menu-estados {
+    margin-top: 8px;
+}
+.clientes .switch-cuentas {
+    font-size: 14px;
+}
+/* END clientes */
+
+/* TOAST */
+md-toast {
+    position: fixed !important;
+}
+md-toast.md-success-toast-theme .md-toast-content {
+    background-color: #52BE80 !important;
+}
+md-toast.md-warning-toast-theme .md-toast-content {
+    background-color: #F9E79F !important;
+    color: black !important;
+}
+md-toast.md-error-toast-theme .md-toast-content {
+    background-color: #E74C3C !important;
+}
+md-toast.md-info-toast-theme .md-toast-content {
+    background-color: #5DADE2 !important;
+}
+/* END TOAST */
+
+/* icons */
+.icon-success { color: #52BE80 !important; }
+.icon-warning { color: #F9E79F !important; }
+.icon-warning { color: #F9E79F !important; }
+.icon-error { color: #E74C3C !important; }
+.icon-info { color: #5DADE2 !important; }
+/* end icons */
+
+.md-button.md-fab.md-fab-bottom-right { position: fixed !important; }
+
+@-webkit-keyframes rotateIcon {
+    from { -webkit-transform: rotate(0deg); }
+    to   { -webkit-transform: rotate(359deg); }
+}
+.iconLoading { -webkit-animation: rotateIcon 1.5s infinite linear; }
+
+/* polizas */
+.polizas .md-headline {
+    font-size: 1.1em;
+    text-overflow: clip;
+    white-space: normal;
+}
+.polizas .fecha {
+    margin: 10px 0 0 10px;
+    color: #787878;
+    font-size: 10pt;
+    font-weight: bold;
+}
+.polizas md-card-title {
+    padding: 10px;
+}
+.polizas .card-media {
+    margin-right: 10px;
+}
+.polizas md-card md-card-title md-card-title-media .md-media-sm {
+    height: 50px;
+    width: 50px;
+}
+.polizas .card-media {
+    margin-right: 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.polizas md-card {
+    border-radius: 10px;
+}
+.polizas .endoso { padding: 10px; }
+.polizas .label {
+    color: dodgerblue;
+}
+.polizas h2 {
+    margin: 5px 0;
+}
+.polizas .card-datos {
+    padding: 0 5px;
+}
+.polizas .card-datos div {
+    margin: 5px 0;
+}
+.polizas .poliza-pdf {
+    cursor: pointer;
+    text-align: center;
+}
+/* END polizas */
+
+/* mensajes */
+.mensajes-toolbar {
+    position: fixed;
+    bottom: 0;
+}
+.mensajes {
+    width: 80%;
+}
+.mensajes.operador {
+    background: ghostwhite;
+    float: left;
+}
+.mensajes.cliente {
+    background: #ABEBC6;
+    float: right;
+}
+/* END mensajes */
+
+/* siniestro */
+.siniestro {
+
+}
+.siniestro md-input-container {
+    margin: 10px;
+}
+/* END siniestro */
+
+/* autos */
+.patente-nueva {
+    border: 1px solid black;
+    padding: 0 !important;
+}
+.patente-nueva-borde {
+    border-top: 12px solid #0b6bd3;
+}
+.patente-vieja {
+    border: 7px solid #ffffff;
+    border-left: 2px !important;
+    border-right: 2px !important;
+    background-color: black;
+    padding: 0 !important;
+    color: white;
+}
+/* END autos */

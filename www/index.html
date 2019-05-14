@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="ngapp">
 
-  <head>
+<head>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Security-Policy">
     <meta name="format-detection" content="telephone=no">
@@ -16,18 +16,52 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700">
 
+    <!-- varibales -->
+    <script>
+        //io.github.corodva-angular-angularMaterial-seed
+        //var envioroment = 'development';
+        var envioroment = 'production';
+        if ( envioroment == 'development' ) {
+            var base_url_app    = 'http://localhost:8080/ale_barbera/terzian/terzianApp/www/#/';
+            var base_url_api    = 'http://localhost:8080/ale_barbera/terzian/terzianWeb/index.php/api/';
+            var base_url_img    = 'http://localhost:8080/ale_barbera/terzian/terzianApp/www/assets/img/';
+            var base_url_logos  = 'http://localhost:8080/ale_barbera/terzian/terzianWeb/assets/uploads/aseguradora';
+            var base_url_polizas= 'http://localhost:8080/ale_barbera/terzian/terzianWeb/assets/uploads/polizas';
+            var logo_app        = 'http://localhost:8080/ale_barbera/terzian/terzianApp/assets/logo-app.png';
+            var logo_app_mini   = 'http://localhost:8080/ale_barbera/terzian/terzianApp/assets/logo-app-mini.png';
+        }
+        else if ( envioroment == 'production' ) {
+            var url_base        = 'http://terzianseguros.com.ar/';
+            var base_url_app    = url_base + 'terzianApp/www/#/';
+            var base_url_api    = url_base + 'index.php/api/';
+            var base_url_img    = url_base + 'assets/img/';
+            var base_url_logos  = url_base + 'assets/uploads/aseguradora/';
+            var base_url_polizas= url_base + 'assets/uploads/polizas';
+            var logo_app        = url_base + 'terzianApp/assets/logo-app.png';
+            var logo_app_mini   = url_base + 'terzianApp/assets/logo-app-mini.png';
+        }
+    </script>
+
     <!-- AngularJs -->
     <script type="text/javascript" src="assets/lib/angular.min.js"></script>
     <script type="text/javascript" src="assets/lib/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="assets/lib/angular-aria.min.js"></script>
     <script type="text/javascript" src="assets/lib/angular-animate.min.js"></script>
+    <script type="text/javascript" src="assets/lib/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="assets/lib/angular-messages.js"></script>
     <script type="text/javascript" src="assets/lib/ngStorage.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.6.9/angular-locale_es-ar.js"></script>
+
+    <!-- detectar device -->
+    <script type="text/javascript" src="assets/lib/ng-device-detector.min.js"></script>
+    <script type="text/javascript" src="assets/lib/re-tree.min.js"></script>
 
     <!-- Angular Material -->
     <script type="text/javascript" src="assets/lib/angular-material.min.js"></script>
 
     <!-- Cordova -->
-    <script type="text/javascript" src="assets/lib/ng-cordova.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova.js"></script>
+    <!-- <script type="text/javascript" src="assets/lib/ng-cordova.min.js"></script> -->
     <script src="cordova.js"></script>
 
     <!-- Modules -->
@@ -42,12 +76,97 @@
     <!-- Controllers -->
     <script type="text/javascript" src="app/components/main/main-controller.js"></script>
 
-    <title>NgApp</title>
-  </head>
+    <!-- google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAt9wSnFX_eOfN_D-1JoTQyH7kSNaDXg-Q&sensor=false" type="text/javascript"></script>
 
-  <body style="position: fixed;" ng-cloak>
+    <title>Terzian App</title>
+</head>
 
-    <ui-view></ui-view>
+<body ng-controller="AppController">
 
-  </body>
+    <div>
+        <md-toolbar flex>
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+
+                <!-- volver -->
+                <div layout="row" layout-align="start center">
+                    <div flex ng-show="$state.current.name != 'main' && $state.current.name != 'dashboard' && $state.current.title != 'Home'">
+                        <md-button class="md-icon-button" aria-label="Atras" ng-click="goToBack()" style="margin: 0;">
+                            <md-icon>arrow_back</md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <!-- titulo activo -->
+                <div flex class="md-toolbar-tools" ng-if="$state.current.title != undefined && $state.current.title != 'Home'">
+                    <h2 flex md-truncate>{{ $state.current.title }}</h2>
+                </div>
+
+                <!-- logo -->
+                <div flex layout="row" ng-if="$state.current.title == undefined || $state.current.title == 'Home' || $state.current.title == 'Ingreso' || $state.current.title == 'Registro'">
+                    <img src="assets/img/logo-app-mini-original.png" style="height:36px;">
+                    <!-- <b style="font-size:1.4em; margin:9px 0 0 4px;">Terzian</b> -->
+                </div>
+
+                <!-- botones -->
+                <div flex ng-show="cliente_logged != null" style="text-align: right;">
+                    <img src="assets/img/logo-app-mini.png" style="height:24px;" ng-if="$state.current.title != undefined && $state.current.title != 'Home'">
+                    <!--
+                    <md-button class="md-icon-button" ng-click="notificar()">
+                        <md-icon>notifications</md-icon>
+                    </md-button>
+                    -->
+                    <md-button class="md-icon-button" aria-label="Inicio" ng-click="goToPage('main')" style="margin: 0;">
+                        <md-icon>home</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleRight()" style="margin: 0;">
+                        <md-icon>menu</md-icon>
+                    </md-button>
+                    <!--  ng-show="cliente_logged.cliente_tipo_id == 1"
+                    <md-button class="md-icon-button" aria-label="Salir" ng-click="logout()" style="margin: 0;">
+                        <md-icon>power_settings_new</md-icon>
+                    </md-button>
+                    -->
+                </div>
+            </div>
+        </md-toolbar>
+
+        <md-sidenav class="md-sidenav-right" md-component-id="right">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">Menu</h1>
+            </md-toolbar>
+            <md-list ng-cloak ng-repeat="men in menu.cliente" ng-if="cliente_logged.cliente_tipo_id == 1">
+                <md-list-item ng-click="goToLink(men.link)">
+                    <md-icon>{{ men.icon }}</md-icon>
+                    <p>{{ men.name }}</p>
+                </md-list-item>
+            </md-list>
+            <md-list ng-cloak ng-repeat="men in menu.cliente" ng-if="cliente_logged.cliente_tipo_id != 1">
+                <md-list-item ng-click="goToLink(men.link)">
+                    <md-icon>{{ men.icon }}</md-icon>
+                    <p>{{ men.name }}</p>
+                </md-list-item>
+            </md-list>
+            <md-list ng-cloak>
+                <md-list-item ng-click="logout();toggleRight()">
+                    <md-icon>power_settings_new</md-icon>
+                    <p>Salir</p>
+                </md-list-item>
+            </md-list>
+
+            <!--
+              <md-list-item ng-click="takePicture()">
+                <md-icon>camera_alt</md-icon>
+                <p>Tomar Foto</p>
+              </md-list-item>
+              -->
+
+        </md-sidenav>
+    </div>
+
+    <div flex layout="column" class="contenido">
+        <ui-view></ui-view>
+    </div>
+
+</body>
 </html>
