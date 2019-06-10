@@ -83,7 +83,10 @@
     <p>No hay Polizas disponibles</p>
   </div>
 
-  <div ng-if="polizas != null" ng-repeat="pol in polizas track by $index">
+
+  <input ng-model="searchText" value="" placeholder="Buscar Poliza" style="display: none;"/>
+
+  <div ng-if="polizas != null" ng-repeat="pol in polizas | filter:searchText track by $index">
 
     <!--
     <div class="fecha">
@@ -152,7 +155,7 @@
     <md-card>
       <md-card-title ng-class="(au.Aut_Patente.length == 6) ? 'patente-vieja' : 'patente-nueva'">
         <div layout="column" layout-align="center center" style="width: 100%;" ng-class="(au.Aut_Patente.length == 6) ? '' : 'patente-nueva-borde'">
-          <div class="">
+          <div class="" ng-click="filtrarPoliza(au.Aut_Patente)">
             <h2>{{ au.Aut_Patente }}</h2>
           </div>
         </div>

@@ -446,6 +446,13 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
     $scope.base_url_logos = base_url_logos;
     $scope.base_url_polizas = base_url_polizas;
 
+    $scope.initFilter = function ()
+    {
+        $scope.searchText = '';
+        $scope.menuActivoPoliza = null;
+    }
+    //$scope.initFilter();
+
     //$scope.polizas = null;
     $scope.getPolizas = function( cliente )
     {
@@ -537,7 +544,11 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
     $scope.getAutos( $scope.cliente_logged );
 
     $scope.menuActivoPoliza = null;
-    $scope.goToLinkId = function( id ) {
+    $scope.goToLinkId = function( id )
+    {
+        if ( $scope.searchText != null ) {
+            $scope.initFilter();
+        }
         $scope.menuActivoPoliza = id;
     }
 
@@ -554,7 +565,8 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
         if ( $scope.auto_new.patente != null || $scope.auto_new.patente != undefined || $scope.auto_new.patente != '' ) {
 
             console.log('busco los autos con la api');
-            var url = 'clientes/getAutos/patente/'+ $scope.auto_new.patente + '/format/json';
+            //var url = 'clientes/getAutos/patente/'+ $scope.auto_new.patente + '/format/json';
+            var url = 'clientes/getPolizas/patente/'+ $scope.auto_new.patente + '/format/json';
 
             $http.get(base_url_api + url).success(function (response) {
                 if ( response.return == 'success' ) {
@@ -596,6 +608,8 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
                 $scope.menuActivoPoliza = 'newAutoSuccess';
                 // vuelvo a buscar las patentes
                 $scope.getAutos( $scope.cliente_logged );
+                // vuelvo a buscar las polizas
+                $scope.getPolizas( $scope.cliente_logged );
                 // reinicio el auto nuevo
                 $scope.initAutoNew();
             } else if ( response == 'existe' ) {
@@ -609,6 +623,12 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
             console.log(data);
             $scope.btnAgregar = false;
         });
+    }
+
+    $scope.filtrarPoliza = function ( patente )
+    {
+        $scope.searchText = patente;
+        $scope.menuActivoPoliza = 'polizas';
     }
 });
 
@@ -945,6 +965,65 @@ angular.module("ngapp").controller("SiniestrosController", function(shared, $sta
     }
 
     $scope.initMap();
+
+    var placeSearch, autocomplete;
+    var componentForm = { street_number: 'short_name', route: 'long_name', locality: 'long_name', administrative_area_level_1: 'short_name', country: 'long_name', postal_code: 'short_name' };
+
+    function initialize()
+    {
+        // Create the autocomplete object, restricting the search
+        // to geographical location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
+            { types: ['geocode'] });
+        // When the user selects an address from the dropdown,
+        // populate the address fields in the form.
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            fillInAddress();
+        });
+    }
+
+    // [START region_fillform]
+    function fillInAddress()
+    {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        var direccion = '';
+
+        // marco el mapa
+        //$( '#latitud' ).val( place.geometry.location.lat() );
+        //$( '#longitud' ).val( place.geometry.location.lng() );
+        //load_map( place.geometry.location.lat(), place.geometry.location.lng() );
+        $scope.siniestro.ubicacion_map = place.geometry.location.lat() + ',' + place.geometry.location.lng()
+        $scope.map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: place.geometry.location.lat(), lng: place.geometry.location.lng()},
+            zoom: 16
+        });
+        // marker
+        $scope.marker = new google.maps.Marker({
+            position: {
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng()
+            },
+            title: "Mi actual ubicación"
+        });
+        $scope.marker.setMap($scope.map);
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+            var addressType = place.address_components[i].types[0];
+            if (componentForm[addressType]) {
+                var val = place.address_components[i][componentForm[addressType]];
+                //document.getElementById(addressType).value = val;
+                direccion = direccion + val + ', ';
+            }
+        }
+        console.log(direccion)
+        //$( '#direccion' ).val( direccion );
+    }
+    // [END region_fillform]
+    initialize();
 
     $scope.galeria = [];
     /*$scope.galeria.push('assets/img/logo-app.png');
