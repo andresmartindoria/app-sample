@@ -32,7 +32,7 @@
 
 <div layout="row" layout-padding layout-wrap ng-cloak layout-align="center center" class="dashboard" ng-show="formPaso == 1">
   <md-card flex-xs="40" flex-gt-sm="33" layout layout-align="center center" class="menu" ng-repeat="men in menu.siniestro" ng-click="nextStep(men.id)">
-    <div flex layout-align="center center" style="text-align: center;" layout="column">
+    <div flex layout-align="center center" style="text-align: center; min-height: 88px;" layout="column">
       <div flex></div>
       <div class="preview-glyphs">
         <md-icon size="64" class="step" style="color: dodgerblue;">{{ men.icon }}</md-icon>
@@ -42,6 +42,7 @@
       </div>
     </div>
   </md-card>
+  <br/><md-button type="button" style="width: 85%; margin-bottom: 10px; text-align: center;" class="md-raised md-secondary" ng-click="goToLink('denuncias')">Mis Denuncias</md-button><br/>
 </div>
 
 <div layout="column" ng-cloak class="siniestro" ng-show="formPaso == 2">
@@ -54,7 +55,16 @@
       <md-card>
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">{{ cliente_logged.marca }} {{ cliente_logged.modelo }} {{ cliente_logged.anio }} ({{ cliente_logged.patente }})</span>
+            <span class="md-headline" ng-if="autos == null">{{ cliente_logged.patente }}</span>
+            <md-input-container class="md-block" ng-if="autos != null" style="margin: 0; margin-top: 10px; margin-bottom: 10px;">
+              <label>Auto</label>
+              <md-select ng-model="siniestro.auto" name="auto" required>
+                <md-option ng-repeat="auto in autos" value="{{auto.Aut_Id}}">{{ auto.Aut_Patente }}</md-option>
+              </md-select>
+              <div ng-messages="siniestroForm.auto.$error">
+                <div ng-message="required">Debe seleccionar una Patente.</div>
+              </div>
+            </md-input-container>
             <!-- <span class="md-subhead description">{{ not.body }}</span> -->
           </md-card-title-text>
         </md-card-title>
@@ -80,7 +90,7 @@
               <label>Nombre del que Manejaba</label>
               <input required type="text" name="otro_nombre" ng-model="siniestro.otro_nombre" minlength="10" maxlength="150"/>
               <div ng-messages="siniestroForm.otro_nombre.$error">
-                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">El Email debe tener entre 10 y 150 caracteres y ser una dirección de v&aacute;lida.</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength']">El Nombre debe tener entre 10 y 150 caracteres.</div>
               </div>
             </md-input-container>
 
@@ -148,7 +158,6 @@
             </div>
 
             <md-input-container class="md-block">
-              <label>Dirección</label>
               <input ng-model="siniestro.ubicacion" name="ubicacion" type="text" id="autocomplete">
             </md-input-container>
 

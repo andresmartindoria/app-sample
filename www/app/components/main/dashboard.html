@@ -4,10 +4,11 @@
 
 <div layout="row" layout-padding layout-wrap ng-cloak layout-align="center center" class="dashboard">
     <md-card flex-xs="40" flex-gt-sm="33" layout layout-align="center center" class="menu" ng-repeat="men in menu.cliente" ng-click="goToLink(men.link)" ng-if="cliente_logged.cliente_tipo_id == 1">
-        <div flex layout-align="center center" style="text-align: center;" layout="column">
+        <div flex layout-align="center center" style="text-align: center; min-height: 88px;" layout="column">
             <div flex></div>
-            <div class="preview-glyphs">
-                <md-icon size="64" class="step" style="color: dodgerblue;">{{ men.icon }}</md-icon>
+            <div class="preview-glyphs" style="height: 50px;">
+                <md-icon size="64" class="step" style="color: dodgerblue;" ng-if="men.icon != null">{{ men.icon }}</md-icon>
+                <img ng-src="{{men.image}}" ng-if="men.image != null" class="step" style="width: 50px; height: 50px;"/>
             </div>
             <div class="preview-scale">
                 <span class="step">{{ men.name }}</span>

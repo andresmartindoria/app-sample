@@ -83,5 +83,12 @@ angular.module("ngapp")
         title: "Notificaciones",
         controller: "NotificacionesController",
         controllerAs: "notificaciones"
+    })
+    .state("asistencia", {
+        url: "/asistencia",
+        templateUrl: "app/components/main/asistencia.html",
+        title: "Asistencia",
+        controller: "DashboardController",
+        controllerAs: "board"
     });
 }]);

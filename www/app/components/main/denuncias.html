@@ -41,6 +41,8 @@
         <div class="card-datos" layout="column">
           <div layout="row"><span class="label" flex="30">Tipo</span><span class="data" flex>{{ den.siniestroTipo }}</span></div>
           <div layout="row"><span class="label" flex="30">Estado</span><span class="data" flex>{{ den.siniestroEstado }}</span></div>
+          <div layout="row" ng-if="den.Aut_Id == 0"><span class="label" flex="30">Auto</span><span class="data" flex>{{ den.original_marca }} {{ den.original_modelo }} {{ den.original_patente }}</span></div>
+          <div layout="row" ng-if="den.Aut_Id != 0"><span class="label" flex="30">Auto</span><span class="data" flex>{{ den.Aut_Marca }} {{ den.Aut_Modelo }} {{ den.Aut_Patente }}</span></div>
           <div layout="row" ng-if="den.conductor == 1"><span class="label" flex="30">Conductor</span><span class="data" flex>T&iacute;tular</span></div>
           <div layout="row" ng-if="den.conductor != 1"><span class="label" flex="30">Conductor</span><span class="data" flex>Otro</span></div>
           <div layout="row" ng-if="den.conductor != 1"><span class="label" flex="30">Nombre del Otro</span><span class="data" flex>{{ den.otro_nombre }}</span></div>

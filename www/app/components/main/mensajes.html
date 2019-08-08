@@ -7,7 +7,7 @@
 </md-toolbar>
 -->
 
-<div layout="column" ng-cloak class="orders notificaciones">
+<div layout="column" ng-cloak class="orders notificaciones" scroll-to-bottom="mensajes" ng-style="{'height':messageWindowHeight}">
 
   <!-- orders -->
   <div ng-if="mensajes.length == 0" layout-padding layout="column" layout-align="center center" class="notResult">
@@ -16,7 +16,6 @@
   </div>
 
   <div ng-if="mensajes != null" ng-repeat="not in mensajes">
-
     <div class="fecha" ng-if="not.fechaGrupal != null" layout-align="center center">&nbsp{{ not.fechaGrupal | toYear | date : 'EEEE dd MMMM yyyy' }}</div>
     <md-card class="mensajes" ng-class="not.cliente_enviado == 1 ? 'cliente' : 'operador'">
       <md-card-title>
@@ -43,16 +42,16 @@
 </div>
 
 <style>
-  .orders.notificaciones { height: calc(100vh - 180px); }
+  .orders.notificaciones { height: calc(100vh - 128px); overflow: auto; }
 </style>
 
-<md-toolbar class="" class="mensajes-toolbar" layout="row" ng-controller="MensajesController">
-  <div class="" flex="95">
-    <md-input-container class="md-block" style="padding: 0; margin: 0; margin-top: 18px; margin-left: 20px;">
+<md-toolbar class="" class="mensajes-toolbar" layout="row">
+  <div class="" flex="85">
+    <md-input-container class="md-block" style="padding: 0; margin: 0; margin-top: 18px; margin-left: 15px;">
       <input ng-model="message" name="message" minlength="1" maxlength="250" placeholder="Escribí un Mensaje aquí" style="background: white; padding: 5px; border-radius: 5px;">
     </md-input-container>
   </div>
-  <div class="" flex="5" layout-align="center center" style="margin-top: 12px;">
+  <div class="" flex="15" layout-align="center center" style="margin-top: 12px; padding-right: 5px;">
     <md-button class="md-icon-button" aria-label="Enviar" ng-click="sendMessage()" style="margin: 0;">
       <md-icon>send</md-icon>
     </md-button>

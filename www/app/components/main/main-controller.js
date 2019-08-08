@@ -188,13 +188,23 @@ angular.module("ngapp").controller("AppController", function(shared, $state, $sc
     }
 
     $scope.menu = [];
-    $scope.menu.cliente = [
+    $scope.menu.sidenav = [
         {id: '1', name: 'Polizas', link: 'polizas', icon: 'payment'},
         {id: '2', name: 'Siniestros', link: 'siniestros', icon: 'healing'},
         {id: '3', name: 'Denuncias', link: 'denuncias', icon: 'assignment'},
+        {id: '4', name: 'Asistencia Mecánica', link: 'asistencia', icon: null, image: 'assets/img/ico-asistencia-grey.png'},
+        {id: '5', name: 'Mensajes', link: 'mensajes', icon: 'message'},
+        {id: '6', name: 'Notificaciones', link: 'notificaciones', icon: 'notifications'},
+        {id: '7', name: 'Beneficios', link: 'beneficios', icon: null, image: 'assets/img/ico-beneficios-grey.png'},
+        {id: '8', name: 'Mi Perfil', link: 'profile', icon: 'person'}
+    ];
+    $scope.menu.cliente = [
+        {id: '1', name: 'Polizas', link: 'polizas', icon: 'payment'},
+        {id: '2', name: 'Siniestros', link: 'siniestros', icon: 'healing'},
+        {id: '3', name: 'Asistencia Mecánica', link: 'asistencia', icon: null, image: 'assets/img/ico-asistencia.png'},
         {id: '4', name: 'Mensajes', link: 'mensajes', icon: 'message'},
         {id: '5', name: 'Notificaciones', link: 'notificaciones', icon: 'notifications'},
-        {id: '6', name: 'Mi Perfil', link: 'profile', icon: 'person'}
+        {id: '6', name: 'Beneficios', link: 'beneficios', icon: null, image: 'assets/img/ico-beneficios.png'}
     ];
     $scope.menu.siniestro = [
         {id: '1', name: 'Accidente o Choque', icon: 'directions_car'},
@@ -464,7 +474,8 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
 
             console.log('busco las polizas con la api');
             //var url = 'clientes/getPolizas/patente/'+ cliente.patente + '/format/json';
-            var url = 'clientes/getPolizas/cliente/'+ cliente.Cli_Cod + '/format/json';
+            //var url = 'clientes/getPolizas/cliente/'+ cliente.Cli_Cod + '/format/json';
+            var url = 'clientes/getAutos/clienteId/'+ cliente.id + '/format/json';
 
             $http.get(base_url_api + url).success(function (response) {
                 if ( response.return == 'success' ) {
@@ -483,7 +494,7 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
                     }, 10, false);
                 }
                 else {
-                    toastFactory.simpleToast('No hay Polizas para el Cliente', 'info-toast');
+                    toastFactory.simpleToast('No hay Polizas Vigentes para el Cliente', 'info-toast');
                 }
             }).error(function (data) {
                 toastFactory.simpleToast(data.error, 'info-toast');
@@ -514,7 +525,9 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
         if ( autos == null || autos == undefined || autos == '' ) {
 
             console.log('busco los autos con la api');
-            var url = 'clientes/getAutos/cliente/'+ cliente.Cli_Cod + '/format/json';
+            //var url = 'clientes/getAutos/patente/'+ cliente.patente + '/format/json';
+            //var url = 'clientes/getAutos/cliente/'+ cliente.Cli_Cod + '/format/json';
+            var url = 'clientes/getAutos/clienteId/'+ cliente.id + '/format/json';
 
             $http.get(base_url_api + url).success(function (response) {
                 if ( response.return == 'success' ) {
@@ -556,6 +569,7 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
     {
         $scope.auto_new = {};
         $scope.auto_new.patente = null;
+        $scope.auto_new.flota = false;
         $scope.auto_new.Cli_Nombre = null;
     }
     $scope.initAutoNew();
@@ -566,7 +580,11 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
 
             console.log('busco los autos con la api');
             //var url = 'clientes/getAutos/patente/'+ $scope.auto_new.patente + '/format/json';
-            var url = 'clientes/getPolizas/patente/'+ $scope.auto_new.patente + '/format/json';
+            if ( $scope.auto_new.flota != false ) {
+                var url = 'clientes/getPolizas/patente/'+ $scope.auto_new.patente + '/flota/'+ $scope.auto_new.flota + '/format/json';
+            } else {
+                var url = 'clientes/getPolizas/patente/'+ $scope.auto_new.patente + '/format/json';
+            }
 
             $http.get(base_url_api + url).success(function (response) {
                 if ( response.return == 'success' ) {
@@ -598,7 +616,7 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
         console.log($scope.auto_new);
         var dataObj = {
             auto: $scope.auto_new,
-            cliente: $scope.cliente_logged.Cli_Cod
+            cliente: $scope.cliente_logged.id
         };
         console.log(dataObj);
         $http.post(base_url_api + url, dataObj).success(function (response) {
@@ -614,6 +632,8 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
                 $scope.initAutoNew();
             } else if ( response == 'existe' ) {
                 toastFactory.simpleToast('La Patente ya se encuentra registrada', 'error-toast');
+            } else if ( response == 'original' ) {
+                toastFactory.simpleToast('La Patente fue registrada al darse de alta', 'error-toast');
             } else {
                 toastFactory.simpleToast('Error Inesperado', 'error-toast');
             }
@@ -632,7 +652,7 @@ angular.module("ngapp").controller("PolizasController", function(shared, $state,
     }
 });
 
-angular.module("ngapp").controller("MensajesController", function(shared, $state, $scope, $http, $timeout, toastFactory, Auth){
+angular.module("ngapp").controller("MensajesController", function(shared, $state, $scope, $http, $timeout, toastFactory, Auth, $window){
 
     // reviso si esta logueado
     $scope.isLogged = function ()
@@ -644,31 +664,35 @@ angular.module("ngapp").controller("MensajesController", function(shared, $state
     }
     $scope.isLogged();
 
+    $scope.messageWindowHeight = parseInt($window.innerHeight - 128) + 'px';
+
     $scope.mensajes = [];
     var mensajesArray = [];
+
     $scope.getMensajes = function( cliente_id )
     {
         var url = 'clientes/getMensajes/cliente/'+ cliente_id + '/estado/2/format/json';
 
         $http.get(base_url_api + url).success(function (response) {
             if ( response.return == 'success' ) {
-                $scope.mensajes = response.data;
+                mensajesArray = response.data;
                 var fechaUltima = null;
-                if ( $scope.mensajes.length > 0 ) {
-                    for (var i = 0; i < $scope.mensajes.length; i++) {
-                        var fecha = $scope.mensajes[i].fecha_enviado.split(' ');
+                if ( mensajesArray.length > 0 ) {
+                    for (var i = 0; i < mensajesArray.length; i++) {
+                        var fecha = mensajesArray[i].fecha_enviado.split(' ');
                         if (fechaUltima != fecha[0]) {
                             fechaUltima = fecha[0];
-                            $scope.mensajes[i].fechaGrupal = $scope.mensajes[i].fecha_enviado;
+                            mensajesArray[i].fechaGrupal = mensajesArray[i].fecha_enviado;
                         } else {
-                            $scope.mensajes[i].fechaGrupal = null;
+                            mensajesArray[i].fechaGrupal = null;
                         }
                     }
                     //mensajesArray = $scope.mensajes;
+                    $scope.mensajes = mensajesArray;
                 }
             }
             else {
-                toastFactory.simpleToast('No hay Notificaciones para el Cliente', 'info-toast');
+                toastFactory.simpleToast('No hay Mensajes para el Cliente', 'info-toast');
             }
         }).error(function (data) {
             toastFactory.simpleToast(data.error, 'info-toast');
@@ -686,9 +710,9 @@ angular.module("ngapp").controller("MensajesController", function(shared, $state
 
         // muestro el mensaje con el reloj
         $timeout(function() {
-            $scope.mensajes.push({id:"123", cliente_enviado:"1", cliente_id:$scope.cliente_logged.id, estado:"0",fechaGrupal:null, fecha_entregado:fecha_ahora, fecha_enviado:fecha_ahora, fecha_leido:"0000-00-00 00:00:00", mensaje:$scope.message, operador_id:"1"});
-        }, 0, false);
-        //mensajesArray.push({mensaje:'mensaje'});
+            mensajesArray.push({id:"123", cliente_enviado:"1", cliente_id:$scope.cliente_logged.id, estado:"1",fechaGrupal:null, fecha_entregado:fecha_ahora, fecha_enviado:fecha_ahora, fecha_leido:"0000-00-00 00:00:00", mensaje:$scope.message, operador_id:"1"});
+            $scope.mensajes = mensajesArray;
+        }, 1, false);
         var indice = parseInt($scope.mensajes.length - 1);
 
         var url = 'clientes/message/format/json';
@@ -706,7 +730,6 @@ angular.module("ngapp").controller("MensajesController", function(shared, $state
                 //$scope.mensajes.push({id:"", cliente_enviado:"1", cliente_id:$scope.cliente_logged.id, estado:"1",fechaGrupal:null, fecha_entregado:fecha_ahora, fecha_enviado:fecha_ahora, fecha_leido:"0000-00-00 00:00:00", mensaje:$scope.message, operador_id:"1"});
                 $scope.message = '';
                 // si se guardo muestro el tilde
-                //$scope.mensajes[indice].estado = 1;
             } else {
                 toastFactory.simpleToast('Error al querer Enviar el Mensaje', 'error-toast');
             }
@@ -809,6 +832,40 @@ angular.module("ngapp").controller("SiniestrosController", function(shared, $sta
         else                            $scope.cliente_logged = cliente_logged;
     }
     $scope.isLogged();
+
+    // busco los autos
+    $scope.autos = null;
+    $scope.getAutos = function( cliente )
+    {
+        var autos = null;
+
+        if ( autos == null || autos == undefined || autos == '' ) {
+
+            console.log('busco los autos con la api');
+            //var url = 'clientes/getAutos/cliente/'+ cliente.Cli_Cod + '/format/json';
+            var url = 'clientes/getAutos/clienteId/'+ cliente.id + '/format/json';
+
+            $http.get(base_url_api + url).success(function (response) {
+                if ( response.return == 'success' ) {
+                    $scope.autos = response.data;
+                    $scope.siniestro.auto = $scope.autos[0].Aut_Id;
+                }
+                else {
+                    toastFactory.simpleToast('No hay Autos del Cliente', 'info-toast');
+                }
+            }).error(function (data) {
+                toastFactory.simpleToast(data.error, 'info-toast');
+            });
+
+        } else {
+            console.log('busco los autos en el storage');
+        }
+
+        $timeout(function() {
+            $scope.autos = autos;
+        }, 0, false);
+    }
+    $scope.getAutos( $scope.cliente_logged );
 
     // denunciar siniestro
     $scope.initFormSiniestro = function ()
@@ -1111,6 +1168,9 @@ angular.module("ngapp").controller("SiniestrosController", function(shared, $sta
         options.fileKey = "file";
         options.fileName = name + '.jpg';
         options.mimeType = "image/jpeg";
+        options.chunkedMode = false;
+
+        console.log('chunkedMode: ' + options.chunkedMode);
 
         var params = {};
         params.value1 = $scope.siniestro_id;
@@ -1315,6 +1375,25 @@ angular.module("ngapp").factory('Excel',function($window){
                 ctx={worksheet:worksheetName,table:table.html()},
                 href=uri+base64(format(template,ctx));
             return href;
+        }
+    };
+});
+
+angular.module("ngapp").directive('scrollToBottom', function($timeout, $window) {
+    return {
+        scope: {
+            scrollToBottom: "="
+        },
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            scope.$watchCollection('scrollToBottom', function(newVal) {
+                if (newVal) {
+                    $timeout(function() {
+                        element[0].scrollTop =  element[0].scrollHeight;
+                    }, 0);
+                }
+
+            });
         }
     };
 });
