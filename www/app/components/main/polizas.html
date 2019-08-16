@@ -115,7 +115,7 @@
           <div layout="row"><span class="label" flex="30">Año</span><span class="data" flex>{{ pol.Aut_Modelo }}</span></div>
           <div layout="row"><span class="label" flex="30">Vigencia</span><span class="data" flex>{{ pol.OperVigDesde | date : 'dd MMM yyyy' }} hasta {{ pol.OperVigHasta | date : 'dd MMM yyyy' }}</span></div>
           <!-- <div layout="row"><span class="label" flex="30">Paga con</span><span class="data" flex>{{ pol.nombrePago }}</span></div> -->
-          <div layout="row"><span class="label" flex="30">Productor</span><span class="data" flex>{{ pol.Cia_Nombre }}</span></div>
+          <div layout="row" ng-if="pol.aseguradoraNombre != ''"><span class="label" flex="30">Productor</span><span class="data" flex>{{ pol.aseguradoraNombre }}</span></div>
         </div>
         <!--
         <span class="md-headline">{{ pol.Cia_Nombre }}</span>
@@ -173,8 +173,8 @@
     </md-card>
   </div>
 
-  <button class="md-fab md-primary md-button" type="button" ng-click="goToLinkId('new-auto')">
-    <md-icon size="24" style="fill:white; color: white;">add</md-icon>
+  <button class="md-raised md-primary md-button" type="button" ng-click="goToLinkId('new-auto')" style="position: absolute; right: 5px; bottom: 10px;">
+    <!--<md-icon size="24" style="fill:white; color: white;">add</md-icon>-->Agregar Auto
   </button>
 </div>
 <!-- END autos -->

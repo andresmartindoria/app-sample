@@ -19,8 +19,8 @@
     <!-- varibales -->
     <script>
         //io.github.corodva-angular-angularMaterial-seed
-        //var envioroment = 'development';
-        var envioroment = 'production';
+        var envioroment = 'development';
+        //var envioroment = 'production';
         if ( envioroment == 'development' ) {
             var base_url_app    = 'http://localhost:8080/ale_barbera/terzian/terzianApp/www/#/';
             var base_url_api    = 'http://localhost:8080/ale_barbera/terzian/terzianWeb/index.php/api/';
@@ -79,7 +79,7 @@
     <!-- google maps -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFJWcanP4RK4UM8LIIvayMjsZ1FXMNx-c&sensor=false&libraries=places" type="text/javascript"></script>
 
-    <title>Terzian App</title>
+    <title>Terzian Seguros</title>
 </head>
 
 <body ng-controller="AppController">
@@ -131,7 +131,7 @@
             </div>
         </md-toolbar>
 
-        <md-sidenav class="md-sidenav-right" md-component-id="right">
+        <md-sidenav class="md-sidenav-right" md-component-id="right" md-swipe-right="toggleRight()">
             <md-toolbar>
                 <h1 class="md-toolbar-tools">Menu</h1>
             </md-toolbar>

@@ -16,7 +16,7 @@
   </div>
 
   <div ng-if="mensajes != null" ng-repeat="not in mensajes">
-    <div class="fecha" ng-if="not.fechaGrupal != null" layout-align="center center">&nbsp{{ not.fechaGrupal | toYear | date : 'EEEE dd MMMM yyyy' }}</div>
+    <div class="fecha" ng-if="not.fechaGrupal != null && not.fechaGrupal != ''" layout-align="center center">&nbsp{{ not.fechaGrupal | toYear | date : 'EEEE dd MMMM yyyy' }}</div>
     <md-card class="mensajes" ng-class="not.cliente_enviado == 1 ? 'cliente' : 'operador'">
       <md-card-title>
         <!--

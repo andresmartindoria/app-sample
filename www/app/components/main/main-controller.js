@@ -56,7 +56,7 @@ angular.module("ngapp").factory('notificationFactory', function(){
                 } else {
                     notificacion = new Notification( titulo,
                         {
-                            icon: "assets/img/logo-psdv.png",
+                            icon: "assets/img/logo-app-mini.png",
                             tag: titulo,
                             body: texto
                         }
@@ -143,7 +143,7 @@ angular.module("ngapp").controller("AppController", function(shared, $state, $sc
     }
 
     if ( $scope.cliente_logged != null ) {
-        //var promise = $interval(function() { $scope.verificarNotificaciones(); }, 30000);
+        var promise = $interval(function() { $scope.verificarNotificaciones(); }, 30000);
 
         $scope.$on('$destroy', function () {
             $interval.cancel(promise);
@@ -190,7 +190,7 @@ angular.module("ngapp").controller("AppController", function(shared, $state, $sc
     $scope.menu = [];
     $scope.menu.sidenav = [
         {id: '1', name: 'Polizas', link: 'polizas', icon: 'payment'},
-        {id: '2', name: 'Siniestros', link: 'siniestros', icon: 'healing'},
+        {id: '2', name: 'Siniestros', link: 'siniestros', icon: null, image: 'assets/img/ico-siniestros-grey.png'},
         {id: '3', name: 'Denuncias', link: 'denuncias', icon: 'assignment'},
         {id: '4', name: 'Asistencia Mecánica', link: 'asistencia', icon: null, image: 'assets/img/ico-asistencia-grey.png'},
         {id: '5', name: 'Mensajes', link: 'mensajes', icon: 'message'},
@@ -200,7 +200,7 @@ angular.module("ngapp").controller("AppController", function(shared, $state, $sc
     ];
     $scope.menu.cliente = [
         {id: '1', name: 'Polizas', link: 'polizas', icon: 'payment'},
-        {id: '2', name: 'Siniestros', link: 'siniestros', icon: 'healing'},
+        {id: '2', name: 'Siniestros', link: 'siniestros', icon: null, image: 'assets/img/ico-siniestros.png'},
         {id: '3', name: 'Asistencia Mecánica', link: 'asistencia', icon: null, image: 'assets/img/ico-asistencia.png'},
         {id: '4', name: 'Mensajes', link: 'mensajes', icon: 'message'},
         {id: '5', name: 'Notificaciones', link: 'notificaciones', icon: 'notifications'},
@@ -697,12 +697,24 @@ angular.module("ngapp").controller("MensajesController", function(shared, $state
         }).error(function (data) {
             toastFactory.simpleToast(data.error, 'info-toast');
         });
+
+        //setTimeout('$scope.getMensajes( $scope.cliente_logged.id )',10000);
+        if ( $state.current.name == 'mensajes' ) {
+            $timeout(function(){
+                $scope.getMensajes( $scope.cliente_logged.id );
+            }, 10000);
+        }
     }
     $scope.getMensajes( $scope.cliente_logged.id );
 
     // envio de mensajes
     $scope.sendMessage = function ()
     {
+        if ( $scope.message == '' || $scope.message == null || $scope.message == undefined ) {
+            toastFactory.simpleToast('Debe escribir un Mensaje', 'error-toast');
+            return false;
+        }
+
         // fecha
         var fecha = new Date();
         var mes = fecha.getMonth() + 1;
